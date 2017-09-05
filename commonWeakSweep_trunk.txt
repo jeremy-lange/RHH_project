@@ -1,0 +1,14 @@
+initialize()
+{
+initializeMutationRate(1.635e-7);
+initializeMutationType("m1", 0.5, "f", 0.0);
+initializeMutationType("m2", 0.5, "e", 0.000275);
+initializeGenomicElementType("g1", c(m1,m2), c(568,4));
+initializeGenomicElement(g1, 0, 10960);
+initializeRecombinationRate(1.25e-6);
+}
+1 {
+sim.addSubpop("p1",50000);
+}
+500000 late(){sim.outputFixedMutations("./fixed_mutations.txt");}
+500000 late(){sim.outputFull("output.txt");}

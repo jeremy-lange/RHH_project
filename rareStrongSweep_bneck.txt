@@ -1,0 +1,25 @@
+initialize()
+{
+initializeMutationRate(1.635e-7);
+initializeMutationType("m1", 0.5, "f", 0.0);
+initializeMutationType("m2", 0.5, "e", 0.55);
+initializeGenomicElementType("g1", c(m1,m2), c(27614070,1));
+initializeGenomicElement(g1, 0, 30000);
+initializeRecombinationRate(1.25e-6);
+}
+500000 {
+sim.readFromPopulationFile("trunk.txt");
+sim.addSubpopSplit("p2",50000,p1);
+}
+500001 { 
+p2.setSubpopulationSize(2350);
+}
+504202 { 
+p2.setSubpopulationSize(50000);
+}
+505660 late(){
+sim.outputFixedMutations("./fixed_mutations.txt");
+}
+505660 late(){
+sim.outputFull("output.txt");
+}

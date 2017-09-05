@@ -1,0 +1,47 @@
+initialize()
+{
+initializeMutationRate(1.635e-7);
+initializeMutationType("m1", 0.5, "f", 0.0);
+initializeMutationType("m2", 0.5, "e", 0.55);
+initializeGenomicElementType("g1", c(m1,m2), c(27614070,1));
+initializeGenomicElement(g1, 0, 30000);
+initializeRecombinationRate(1.25e-6);
+}
+500000 {
+sim.readFromPopulationFile("trunk.txt");
+sim.addSubpopSplit("p2",50000,p1);
+}
+500001 { 
+p1.setMigrationRates(p2, 2.5e-6);
+p2.setMigrationRates(p1, 2.5e-6);
+}
+fitness(m2,p1) {
+if(mut.subpopID == 1)
+if(homozygous)
+return 1.0 + mut.selectionCoeff;
+else
+return 1.0 + mut.mutationType.dominanceCoeff * mut.selectionCoeff;
+else
+if(homozygous)
+return 1.0 - mut.selectionCoeff;
+else
+return 1.0 - mut.mutationType.dominanceCoeff * mut.selectionCoeff;
+}
+fitness(m2,p2) {
+if(mut.subpopID == 1)
+if(homozygous)
+return 1.0 - mut.selectionCoeff;
+else
+return 1.0 - mut.mutationType.dominanceCoeff * mut.selectionCoeff;
+else
+if(homozygous)
+return 1.0 + mut.selectionCoeff;
+else
+return 1.0 + mut.mutationType.dominanceCoeff * mut.selectionCoeff;
+}
+525000 late(){
+sim.outputFixedMutations("./fixed_mutations.txt");
+}
+525000 late(){
+sim.outputFull("output.txt");
+}
